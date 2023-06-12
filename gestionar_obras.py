@@ -35,14 +35,7 @@ class GestionarObra(metaclass=ABCMeta):
             exit()
     #Este es el punto 4.C
     @classmethod
-    def mapear_orm(self):
-        sqlite_db = GestionarObra().conectar_db()
-        class BaseModel(Model):
-
-            class Meta:
-                database = sqlite_db
-
-
+    def mapear_orm(self,BaseModel,sqlite_db):
         class EstructuraBDObras (BaseModel):
             entorno = CharField()
             nombre = CharField()
