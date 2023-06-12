@@ -47,6 +47,11 @@ class EstructuraBDObras (BaseModel):
         db_table='Obras Públicas'
 sqlite_db.create_tables([EstructuraBDObras])
 
+class Obra ():
+    def nuevo_proyecto():
+        pass
+    def iniciar_contratacion():
+        pass
 
 
 
