@@ -70,9 +70,27 @@ class GestionarObra(metaclass=ABCMeta):
             expediente_numero = CharField()
             estudio_ambiental_descarga = CharField()
             financiamiento = CharField()
+            
 
             class Meta:
                 db_table = 'Obras Públicas'
         sqlite_db.create_tables([EstructuraBDObras])
-                
+        return EstructuraBDObras
+        
+    
+    #Este es el punto 4.D
+    @classmethod
+    def limpiar_datos(self):
+        df=self.extraer_datos()
+        print(df)
+        print("limpiando datos")
+        df.dropna(subset=["monto_contrato", "comuna", "barrio", "direccion","etapa", "tipo", "area_responsable", "descripcion",
+                  ], axis=0, inplace=True)
+        print(df)
+        return df
+    
+    
+        
+    
+    
                 

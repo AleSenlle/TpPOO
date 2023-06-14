@@ -1,5 +1,4 @@
 from peewee import *
-import os
 from gestionar_obras import *
 
 sqlite_db=GestionarObra().conectar_db()
@@ -15,6 +14,8 @@ class Obra ():
     def iniciar_contratacion():
         pass
 
+
+GestionarObra().limpiar_datos()
 
 
 
