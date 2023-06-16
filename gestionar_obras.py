@@ -40,23 +40,23 @@ class GestionarObra(metaclass=ABCMeta):
             etapa = CharField()
             tipo = CharField()
             area_responsable = CharField()
-            descripcion = CharField()
-            monto_contrato = CharField()
+            descripcion = TextField()
+            monto_contrato = FloatField()
             comuna = CharField()
             barrio = CharField()
             direccion = CharField()
-            lat = CharField()
-            lng = CharField()
-            fecha_inicio = CharField()
-            fecha_fin_inicial = CharField()
-            plazo_meses = CharField()
+            lat = FloatField()
+            lng = FloatField()
+            fecha_inicio = DateField()
+            fecha_fin_inicial = DateField()
+            plazo_meses = IntegerField()
             porcentaje_avance = CharField()
             imagen_1 = CharField()
             imagen_2 = CharField()
             imagen_3 = CharField()
             imagen_4 = CharField()
             licitacion_oferta_empresa = CharField()
-            licitacion_anio = CharField()
+            licitacion_anio = IntegerField()
             contratacion_tipo = CharField()
             nro_contratacion = CharField()
             cuit_contratista = CharField()
@@ -71,12 +71,10 @@ class GestionarObra(metaclass=ABCMeta):
             estudio_ambiental_descarga = CharField()
             financiamiento = CharField()
             
-
             class Meta:
                 db_table = 'Obras Públicas'
         sqlite_db.create_tables([EstructuraBDObras])
         return EstructuraBDObras
-        
     
     #Este es el punto 4.D
     @classmethod
