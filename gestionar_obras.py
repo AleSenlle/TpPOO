@@ -34,46 +34,94 @@ class GestionarObra(metaclass=ABCMeta):
     #Este es el punto 4.C
     @classmethod
     def mapear_orm(self,BaseModel,sqlite_db):
+        class Ebarrios (BaseModel):
+            id = IntegerField(primary_key=True)
+            nombre = CharField()
+            nro_comuna = IntegerField()
+            class Meta:
+                db_table = 'barrios'
+
+        class Eareas_responsables (BaseModel):
+            id = IntegerField(primary_key=True)
+            descripcion = CharField()
+            class Meta:
+                db_table = 'areas_responsables'
+        
+        class Ecomunas (BaseModel):
+            id = IntegerField(primary_key=True)
+            nro_comuna = IntegerField()
+            class Meta:
+                db_table = 'comunas'
+        
+        class Eempresa (BaseModel):
+            id = IntegerField(primary_key=True)
+            cuit = CharField()
+            razonSocial = CharField()
+            class Meta:
+                db_table = 'empresa'
+        
+        class Eetapas (BaseModel):
+            id = IntegerField(primary_key=True)
+            descripcion = CharField()
+            class Meta:
+                db_table = 'etapas'
+        
+        class EFuenteFinanciamiento (BaseModel):
+            id = IntegerField(primary_key=True)
+            descripcion = CharField()
+            class Meta:
+                db_table = 'fuente_financiamiento'
+        
+       
+        
+        class Etipo_contratacion (BaseModel):
+            id = IntegerField(primary_key=True)
+            descripcion = CharField()
+            class Meta:
+                db_table = 'tipo_contratacion'
+        
+        class Etipo_obra (BaseModel):
+            id = IntegerField(primary_key=True)
+            descripcion = CharField()
+            class Meta:
+                db_table = 'tipo_obra'  
+            
+        
         class EstructuraBDObras (BaseModel):
+            id = IntegerField(primary_key=True)    
             entorno = CharField()
             nombre = CharField()
-            etapa = CharField()
-            tipo = CharField()
-            area_responsable = CharField()
-            descripcion = TextField()
-            monto_contrato = FloatField()
-            comuna = CharField()
-            barrio = CharField()
+            descripcion = CharField()
+            monto_contrato = IntegerField()
             direccion = CharField()
-            lat = FloatField()
-            lng = FloatField()
             fecha_inicio = DateField()
             fecha_fin_inicial = DateField()
             plazo_meses = IntegerField()
-            porcentaje_avance = CharField()
-            imagen_1 = CharField()
-            imagen_2 = CharField()
-            imagen_3 = CharField()
-            imagen_4 = CharField()
-            licitacion_oferta_empresa = CharField()
-            licitacion_anio = IntegerField()
-            contratacion_tipo = CharField()
+            porcentaje_avance = IntegerField()
+            licitacion_ano = IntegerField()
             nro_contratacion = CharField()
-            cuit_contratista = CharField()
             beneficiarios = CharField()
             mano_obra = CharField()
-            compromiso = CharField()
             destacada = CharField()
-            ba_elige = CharField()
-            link_entorno = CharField()
-            pliego_descarga = CharField()
             expediente_numero = CharField()
-            estudio_ambiental_descarga = CharField()
-            financiamiento = CharField()
+            id_etapa = ForeignKeyField(Eetapas, backref='etapas')
+            id_empresa = ForeignKeyField(Eempresa, backref='empresa')
+            id_tipo_obra = ForeignKeyField(Etipo_obra, backref='tipo_obra')
+            id_areas_responsables = ForeignKeyField(Eareas_responsables, backref='areas_responsables')
+            id_barrio = ForeignKeyField(Ebarrios, backref='barrios')
+            id_tipo_contratacion = ForeignKeyField(Etipo_contratacion, backref='tipo_contratacion')
+            id_fuente_financiamiento = ForeignKeyField(EFuenteFinanciamiento, backref='fuente_financiamiento')
             
             class Meta:
                 db_table = 'Obras Públicas'
-        sqlite_db.create_tables([EstructuraBDObras])
+        class Eimagen (BaseModel):
+            id = IntegerField(primary_key=True)
+            id_obra = ForeignKeyField(EstructuraBDObras, backref='obra')
+            descripcion = CharField()
+            class Meta:
+                db_table = 'imagen'
+                
+        sqlite_db.create_tables([EstructuraBDObras,Ebarrios,Eareas_responsables,Ecomunas,Eempresa,Eetapas,EFuenteFinanciamiento,Eimagen,Etipo_contratacion,Etipo_obra])
         return EstructuraBDObras
     
     #Este es el punto 4.D
