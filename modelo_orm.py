@@ -15,7 +15,8 @@ class Ebarrios (BaseModel):
 class Eareas_responsables (BaseModel):
             descripcion = CharField()
             class Meta:
-                db_table = 'areas_responsables'
+                db_table = 'area_responsable'
+                
 class Ecomunas (BaseModel):
             nro_comuna = IntegerField()
             class Meta:
@@ -32,23 +33,20 @@ class Eetapas (BaseModel):
             class Meta:
                 db_table = 'etapas'
         
-class EFuenteFinanciamiento (BaseModel):
+class EFinanciamiento (BaseModel):
             descripcion = CharField()
             class Meta:
-                db_table = 'fuente_financiamiento'
-        
-       
+                db_table = 'financiamiento'    
         
 class Etipo_contratacion (BaseModel):
             descripcion = CharField()
             class Meta:
-                db_table = 'tipo_contratacion'
+                db_table = 'contratacion_tipo'
         
 class Etipo_obra (BaseModel):
             descripcion = CharField()
             class Meta:
-                db_table = 'tipo_obra'  
-            
+                db_table = 'tipo'  
         
 class EstructuraBDObras (BaseModel):    
             entorno = CharField()
@@ -72,16 +70,18 @@ class EstructuraBDObras (BaseModel):
             id_areas_responsables = ForeignKeyField(Eareas_responsables, backref='areas_responsables')
             id_barrio = ForeignKeyField(Ebarrios, backref='barrios')
             id_tipo_contratacion = ForeignKeyField(Etipo_contratacion, backref='tipo_contratacion')
-            id_fuente_financiamiento = ForeignKeyField(EFuenteFinanciamiento, backref='fuente_financiamiento')
+            id_financiamiento = ForeignKeyField(EFinanciamiento, backref='financiamiento')
             
             class Meta:
                 db_table = 'Obras Públicas'
+
 class Eimagen (BaseModel):
             id_obra = ForeignKeyField(EstructuraBDObras, backref='obra')
             descripcion = CharField()
             class Meta:
                 db_table = 'imagen'
-lista=[Ebarrios,Eareas_responsables,Ecomunas,Eempresa,Eetapas,Eimagen,EstructuraBDObras,Etipo_obra,Etipo_contratacion,EFuenteFinanciamiento]
+
+lista=[Ebarrios,Eareas_responsables,Ecomunas,Eempresa,Eetapas,Eimagen,EstructuraBDObras,Etipo_obra,Etipo_contratacion,EFinanciamiento]
 GestionarObra().mapear_orm(sqlite_db,lista)
 class Obra ():
     def nuevo_proyecto():
@@ -89,8 +89,7 @@ class Obra ():
     def iniciar_contratacion():
         pass
 
-
-GestionarObra().cargar_datos(Ecomunas)
+GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa)
 
 
 
