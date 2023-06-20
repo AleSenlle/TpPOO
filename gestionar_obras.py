@@ -43,8 +43,7 @@ class GestionarObra(metaclass=ABCMeta):
         df=self.extraer_datos()
         print(df)
         print("limpiando datos")
-        df.dropna(subset=["monto_contrato", "comuna", "barrio", "direccion","etapa", "tipo", "area_responsable", "descripcion",
-                  ], axis=0, inplace=True)
+        df.dropna(subset=["monto_contrato", "comuna", "barrio", "direccion","etapa", "tipo", "area_responsable", "descripcion",], axis=0, inplace=True)
         print(df)
         return df
     
@@ -164,4 +163,8 @@ class GestionarObra(metaclass=ABCMeta):
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla barrio.", e)
         print("Se han persistido los barrios en la BD.")
+    
+'''    @classmethod
+    def nueva_obra(self,Obra):'''
+
                 

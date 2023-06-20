@@ -2,10 +2,11 @@ from peewee import *
 from gestionar_obras import *
 
 sqlite_db=GestionarObra().conectar_db()
+
 #Punto 5
 class Obra():
 
-    def __init__(self, entorno: str, nombre: str, etapa: str, tipo_obra: str, area_responsable: str, descripcion: str, monto_contrato: float, barrio: str, direccion: str,  plazo_meses: int, beneficiarios: str, tipo_contratacion="0", nro_contratacion="0", mano_obra="0", destacada=0, expediente_numero="0", fuente_financiamiento ="0", fecha_inicio="0", fecha_fin_inicial="0", porcentaje_avance = 0, empresa="0", licitacion_anio="0"):
+    def __init__(self, entorno: str, nombre: str, tipo_obra: str, area_responsable: str, descripcion: str, monto_contrato: float, barrio: str, direccion: str,  plazo_meses: int, beneficiarios: str, etapa: str, tipo_contratacion="0", nro_contratacion="0", mano_obra="0", destacada=0, expediente_numero="0", fuente_financiamiento ="0", fecha_inicio="0", fecha_fin_inicial="0", porcentaje_avance = 0, empresa="0", licitacion_anio="0"):
         self.entorno = entorno
         self.nombre = nombre
         self.etapa = etapa
@@ -25,7 +26,6 @@ class Obra():
         self.nro_contratacion = nro_contratacion
         self.beneficiarios = beneficiarios
         self.mano_obra = mano_obra
-        
         self.expediente_numero = expediente_numero
         self.fuente_financiamiento = fuente_financiamiento
 
@@ -216,17 +216,12 @@ class Obra():
         self.__fuente_financiamiento = value
 
     def __str__(self) -> str:
-        
-        
-
         return "el entorno es: " + str(self.entorno) + "\nEl nombre de la obra es: " + str(self.nombre) + "\nEstá en la etapa de: " + str(self.etapa) + "\nEl tipo de obra es: " + str(self.tipo_obra) + "\nEl área responsable es: " + str(self.area_responsable) + "\nLa descripción es: " + str(self.descripcion) + "\nEl monto del contrato es: " + str(self.monto_contrato) + "\nUbicada en el barrio de: " + str(self.barrio) + "\nLa dirección es: " + str(self.direccion) + "\nFecha de inicio: " + str(self.fecha_inicio) + "\nLa fecha prevista para la finalizacion es: " + str(self.fecha_fin_inicial) + "\nEl plazo de meses estimado es de: " + str(self.plazo_meses) + " meses" + "\nEl porcentaje de avance es de: " + str(self.porcentaje_avance) + "%" + "\nLa empresa a cargo es: " + str(self.empresa) + "\nLa licitación es del año: " + str(self.licitacion_anio) + "\nEl tipo de contratación es: " + str(self.tipo_contratacion) + "\nEl número de contratación es: " + str(self.nro_contratacion) + "\nLos beneficiarios son: " + str(self.beneficiarios) + "\nLa mano de obra está compuesta por: " + str(self.mano_obra) + " empleados" + "\nEl expediente es el número: " + str(self.expediente_numero) + " \n " + str(self.fuente_financiamiento) 
 
     def nuevo_proyecto(self):
          self.nombre=input("Ingrese el nombre del proyecto: ")
          self.etapa="proyecto"
          
-        
-
     def iniciar_contratacion(self, tipo_contratacion: str, nro_contratacion):
 
         self.tipo_contratacion = tipo_contratacion
@@ -236,8 +231,6 @@ class Obra():
 
         self.empresa = empresa
         self.expediente_numero = expediente_numero
-    
-   
     
     def iniciar_obra(self,fecha_inicio:str,fecha_fin_inicial,fuente_financiamiento:str,mano_obra:int):
        
@@ -252,8 +245,6 @@ class Obra():
     def incrementar_plazo(self,meses:int):
         self.plazo_meses =self.plazo_meses + meses
     
-    
-
     def incrementar_mano_obra(self, cantidad:int):
         self.mano_obra = self.mano_obra + cantidad
 
@@ -340,13 +331,8 @@ class EstructuraBDObras (BaseModel):
           
 lista=[Ebarrios,Eareas_responsables,Ecomunas,Eempresa,Eetapas,EstructuraBDObras,Etipo_obra,Etipo_contratacion,EFinanciamiento]
 GestionarObra().mapear_orm(sqlite_db,lista)
-class Obra ():
-    def nuevo_proyecto():
-        pass
-    def iniciar_contratacion():
-        pass
 
-#GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,EstructuraBDObras)
+GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,EstructuraBDObras)
 
 
 
