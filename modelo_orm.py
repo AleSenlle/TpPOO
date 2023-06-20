@@ -1,12 +1,13 @@
 from peewee import *
 from gestionar_obras import *
+import math
 
 sqlite_db=GestionarObra().conectar_db()
 
 #Punto 5
 class Obra():
 
-    def __init__(self, entorno: str, nombre: str, tipo_obra: str, area_responsable: str, descripcion: str, monto_contrato: float, barrio: str, direccion: str,  plazo_meses: int, beneficiarios: str, etapa: str, tipo_contratacion="0", nro_contratacion="0", mano_obra="0", destacada=0, expediente_numero="0", fuente_financiamiento ="0", fecha_inicio="0", fecha_fin_inicial="0", porcentaje_avance = 0, empresa="0", licitacion_anio="0"):
+    def __init__(self, entorno: str, nombre: str, tipo_obra: str, area_responsable: str, descripcion: str, monto_contrato: float, barrio: str, direccion: str,  plazo_meses: int, beneficiarios: str, etapa="proyecto", tipo_contratacion="0", nro_contratacion="0", mano_obra="0", expediente_numero="0", fuente_financiamiento ="0", fecha_inicio="0", fecha_fin_inicial="0", porcentaje_avance = 0, empresa="0", licitacion_anio="0"):
         self.entorno = entorno
         self.nombre = nombre
         self.etapa = etapa
@@ -20,7 +21,7 @@ class Obra():
         self.fecha_fin_inicial = fecha_fin_inicial
         self.plazo_meses = plazo_meses
         self.porcentaje_avance = porcentaje_avance
-        #self.empresa = empresa
+        self.empresa = empresa
         self.licitacion_anio = licitacion_anio
         self.tipo_contratacion = tipo_contratacion
         self.nro_contratacion = nro_contratacion
@@ -324,15 +325,22 @@ class EstructuraBDObras (BaseModel):
             area_responsable = ForeignKeyField(Eareas_responsables, backref='areas_responsables')
             barrio = ForeignKeyField(Ebarrios, backref='barrios')
             tipo_contratacion = ForeignKeyField(Etipo_contratacion, backref='tipo_contratacion')
-            #financiamiento = ForeignKeyField(EFinanciamiento, backref='financiamiento')
+            financiamiento = ForeignKeyField(EFinanciamiento, backref='financiamiento')
             class Meta:
                 db_table = 'Obras Públicas'
-
+            @classmethod
+            def pre_save(self):
+                if self.financiamiento is None:
+                    default_financiamiento = EFinanciamiento.get_or_create(financiamiento="Por defecto")[0]
+                    self.financiamiento = default_financiamiento
           
 lista=[Ebarrios,Eareas_responsables,Ecomunas,Eempresa,Eetapas,EstructuraBDObras,Etipo_obra,Etipo_contratacion,EFinanciamiento]
-GestionarObra().mapear_orm(sqlite_db,lista)
+#GestionarObra().mapear_orm(sqlite_db,lista)
 
-GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,EstructuraBDObras)
+#GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,EstructuraBDObras)
+obra=GestionarObra().nueva_obra(Obra,Etipo_obra,Eareas_responsables,Ebarrios)
+
+
 
 
 

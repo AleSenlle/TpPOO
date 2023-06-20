@@ -139,7 +139,8 @@ class GestionarObra(metaclass=ABCMeta):
         for elem in df.values:
            if elem is not np.nan:
                 try:
-                    EstructuraBDObras.create(entorno=elem[1],nombre=elem[2],descripcion=elem[6],monto_contrato=elem[7],direccion=elem[10],fecha_inicio=elem[13],fecha_fin_inicial=elem[14],plazo_meses=elem[15],porcentaje_avance=0.0,licitacion_anio=elem[22],nro_contratacion=elem[24],beneficiarios=elem[26],mano_obra=elem[27],expediente_numero=elem[33],etapa=elem[3],empresa=elem[21],tipo_obra=elem[4],area_responsable=elem[5],barrio=elem[9],tipo_contratacion=elem[23])
+                    EstructuraBDObras.pre_save()
+                    EstructuraBDObras.create(entorno=elem[1],nombre=elem[2],descripcion=elem[6],monto_contrato=elem[7],direccion=elem[10],fecha_inicio=elem[13],fecha_fin_inicial=elem[14],plazo_meses=elem[15],porcentaje_avance=0.0,licitacion_anio=elem[22],nro_contratacion=elem[24],beneficiarios=elem[26],mano_obra=elem[27],expediente_numero=elem[33],etapa=elem[3],empresa=elem[21],tipo_obra=elem[4],area_responsable=elem[5],barrio=elem[9],tipo_contratacion=elem[23],financiamiento=elem[35])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla obras.", e)
         print("Se han persistido las obras en la BD.")
@@ -164,7 +165,71 @@ class GestionarObra(metaclass=ABCMeta):
                     print("Error al insertar un nuevo registro en la tabla barrio.", e)
         print("Se han persistido los barrios en la BD.")
     
-'''    @classmethod
-    def nueva_obra(self,Obra):'''
+    #este es el punto 4.F
+    @classmethod
+    def nueva_obra(cls, Obra, Eetapas,Eareas_responsables,Ebarrios):
+        sqlite_db = cls.conectar_db()
+        print ("Conexión exitosa a la base de datos")
+        
+        # Consulta a la base de datos
+        query = Eetapas.select().where(Eetapas.descripcion != ' ')
+        resultados = list(query)
+        print("Cantidad de obras finalizadas: ", len(resultados))
+        
+        # Recorre los resultados y muestra la descripción
+        for resultado in resultados:
+            print(resultado.descripcion)
+        print("Fin de la lista")
+        
+        sqlite_db.close()
 
-                
+        # Resto del código para ingresar los datos de la nueva obra
+        tipo_obra = input("Ingrese el tipo de obra: ")
+        entorno = input("Ingrese el entorno: ")
+        nombre = input("Ingrese el nombre: ")
+        
+        sqlite_db = cls.conectar_db()
+        print ("Conexión exitosa a la base de datos")
+        
+        # Consulta a la base de datos
+        query = Eareas_responsables.select().where(Eareas_responsables.descripcion != ' ')
+        resultados = list(query)
+        
+        
+        # Recorre los resultados y muestra la descripción
+        for resultado in resultados:
+            print(resultado.descripcion)
+        print("Fin de la lista")
+        
+        sqlite_db.close()
+
+        area_responsable = input("Ingrese el responsable de área: ")
+
+
+        descripcion = input("Ingrese una descripción: ")
+        monto_contrato = input("Ingrese el monto del contrato: ")
+        
+        sqlite_db = cls.conectar_db()
+        print ("Conexión exitosa a la base de datos")
+        
+        # Consulta a la base de datos
+        query = Ebarrios.select().where(Ebarrios.nombre != ' ')
+        resultados = list(query)
+        print("Cantidad de obras finalizadas: ", len(resultados))
+        
+        # Recorre los resultados y muestra la descripción
+        for resultado in resultados:
+            print(resultado.nombre)
+        print("Fin de la lista")
+        
+        sqlite_db.close()
+        barrio = input("Ingrese el barrio: ")
+        direccion = input("Ingrese la dirección: ")
+        plazo_meses = input("Ingrese el plazo de meses: ")
+        beneficiarios = input("Ingrese quienes son los beneficiarios: ")
+
+        obra = Obra(entorno=entorno, nombre=nombre, tipo_obra=tipo_obra, area_responsable=area_responsable,
+                    descripcion=descripcion, monto_contrato=monto_contrato, barrio=barrio, direccion=direccion,
+                    plazo_meses=plazo_meses, beneficiarios=beneficiarios)
+
+        return obra
