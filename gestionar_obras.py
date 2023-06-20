@@ -37,7 +37,6 @@ class GestionarObra(metaclass=ABCMeta):
     def mapear_orm(self,sqlite_db,lista):
         sqlite_db.create_tables(lista)
         
-    
     #Este es el punto 4.D
     @classmethod
     def limpiar_datos(self):
@@ -51,7 +50,26 @@ class GestionarObra(metaclass=ABCMeta):
     
     #Este es el punto 4.E
     @classmethod
-    def cargar_datos(self,Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,Eimagen,EstructuraBDObras):
+    def normalizar_etapas(self, etapa):
+        mapeo = {
+            'Proc. Adm': 'Proyecto',
+            'Licitación': 'Proyecto',
+            'Sin iniciar': 'Proyecto',
+            'Rescindida': 'Rescindida',
+            'En ejecución': 'Inicializada',
+            'En obra': 'Inicializada',
+            'Desestimada': 'Rescindida',
+            'En licitación': 'Proyecto',
+            'Neutralizada': 'Rescindida',
+            'Pausada': 'Inicializada',
+            'Inicial': 'Inicializada',
+            'En Ejecución': 'Inicializada',
+            'Adjudicada': 'Proyecto',
+            'Finalizada': 'Finalizada',
+        }
+        return mapeo.get(etapa, 'Proyecto')
+    @classmethod
+    def cargar_datos(self,Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,EstructuraBDObras):
         df=self.limpiar_datos()
        
         data_unique = list(df['comuna'].unique())
@@ -74,6 +92,7 @@ class GestionarObra(metaclass=ABCMeta):
                 print("Error al insertar un nuevo registro en la tabla Area Responsable.", e)
         print("Se han persistido los tipos de Obras en la BD.")
         
+        df['etapa'] = df['etapa'].apply(self.normalizar_etapas)
         data_unique = list(df['etapa'].unique())
         print(data_unique)
         for elem in data_unique:
@@ -115,27 +134,34 @@ class GestionarObra(metaclass=ABCMeta):
             except IntegrityError as e:
                 print("Error al insertar un nuevo registro en la tabla Tipo de Obra.", e)
         print("Se han persistido los tipos de Obras en la BD.")
-
-        #Ahora normalizo las tablas que tienen +2 columnas:
-        df.drop_duplicates(subset=['barrio'],inplace=True)
-        df.drop_duplicates(subset=['licitacion_oferta_empresa'],inplace=True)
-        #df.drop_duplicates(subset=['imagen'],inplace=True)
+         
+         #Ahora normalizo las tablas que tienen +2 columnas:                   
         df.drop_duplicates(subset=['nombre'],inplace=True)
-        df.drop_duplicates(subset=['descripcion'],inplace=True)
-                           #,'nombre','etapa', 'tipo', 'area_responsable', 'descripcion', 'monto_contrato', 'comuna', 'barrio', 'direccion', 'lat', 'lng', 'fecha_inicio', 'fecha_fin_inicial', 'plazo_meses', 'porcentaje_avance', 'imagen_1', 'imagen_2', 'imagen_3', 'imagen_4', 'licitacion_oferta_empresa', 'licitacion_anio', 'contratacion_tipo', 'nro_contratacion', 'cuit_contratista', 'beneficiarios', 'mano_obra', 'compromiso', 'destacada', 'ba_elige', 'link_interno', 'pliego_descarga', 'expediente-numero', 'estudio_ambiental_descarga', 'financiamiento'])
+        for elem in df.values:
+           if elem is not np.nan:
+                try:
+                    EstructuraBDObras.create(entorno=elem[1],nombre=elem[2],descripcion=elem[6],monto_contrato=elem[7],direccion=elem[10],fecha_inicio=elem[13],fecha_fin_inicial=elem[14],plazo_meses=elem[15],porcentaje_avance=0.0,licitacion_anio=elem[22],nro_contratacion=elem[24],beneficiarios=elem[26],mano_obra=elem[27],expediente_numero=elem[33],etapa=elem[3],empresa=elem[21],tipo_obra=elem[4],area_responsable=elem[5],barrio=elem[9],tipo_contratacion=elem[23])
+                except IntegrityError as e:
+                    print("Error al insertar un nuevo registro en la tabla obras.", e)
+        print("Se han persistido las obras en la BD.")
+           
+        df.drop_duplicates(subset=['licitacion_oferta_empresa'],inplace=True)
         for elem in df.values:
            if elem is not np.nan:
                 print(elem)
                 try:
                     Eempresa.create(cuit=elem[25], razonSocial=elem[21])
-                    Ebarrios.create(nombre=elem[9],nro_comuna=elem[8])
-                    EstructuraBDObras.create(entorno=elem[2],nombre=elem[3],descripcion=elem[7],monto_contrato=elem[8],direccion=elem[11],fecha_inicio=elem[14],fecha_fin_inicial=elem[15],plazo_meses=elem[16],porcentaje_avance=0.0,licitacion_anio=elem[23],nro_contratacion=elem[25],beneficiarios=elem[27],mano_obra=elem[28],destacada=elem[30],expediente_numero=elem[34])
-
-                    #Eimagen.create(id_obra_id=elem[])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla Empresa.", e)
         print("Se han persistido los tipos de Empresas en la BD.")
     
-
-    
+        df.drop_duplicates(subset=['barrio'],inplace=True)                   
+        for elem in df.values:
+           if elem is not np.nan:
+                print(elem)
+                try:
+                    Ebarrios.create(nombre=elem[9],nro_comuna=elem[8])
+                except IntegrityError as e:
+                    print("Error al insertar un nuevo registro en la tabla barrio.", e)
+        print("Se han persistido los barrios en la BD.")
                 
