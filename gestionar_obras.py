@@ -51,7 +51,7 @@ class GestionarObra(metaclass=ABCMeta):
     
     #Este es el punto 4.E
     @classmethod
-    def cargar_datos(self,Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa):
+    def cargar_datos(self,Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,Eimagen,EstructuraBDObras):
         df=self.limpiar_datos()
        
         data_unique = list(df['comuna'].unique())
@@ -116,17 +116,26 @@ class GestionarObra(metaclass=ABCMeta):
                 print("Error al insertar un nuevo registro en la tabla Tipo de Obra.", e)
         print("Se han persistido los tipos de Obras en la BD.")
 
+        #Ahora normalizo las tablas que tienen +2 columnas:
+        df.drop_duplicates(subset=['barrio'],inplace=True)
+        df.drop_duplicates(subset=['licitacion_oferta_empresa'],inplace=True)
+        #df.drop_duplicates(subset=['imagen'],inplace=True)
+        df.drop_duplicates(subset=['nombre'],inplace=True)
+        df.drop_duplicates(subset=['descripcion'],inplace=True)
+                           #,'nombre','etapa', 'tipo', 'area_responsable', 'descripcion', 'monto_contrato', 'comuna', 'barrio', 'direccion', 'lat', 'lng', 'fecha_inicio', 'fecha_fin_inicial', 'plazo_meses', 'porcentaje_avance', 'imagen_1', 'imagen_2', 'imagen_3', 'imagen_4', 'licitacion_oferta_empresa', 'licitacion_anio', 'contratacion_tipo', 'nro_contratacion', 'cuit_contratista', 'beneficiarios', 'mano_obra', 'compromiso', 'destacada', 'ba_elige', 'link_interno', 'pliego_descarga', 'expediente-numero', 'estudio_ambiental_descarga', 'financiamiento'])
         for elem in df.values:
-            if elem is not np.nan:
+           if elem is not np.nan:
                 print(elem)
-                #tipo_transp = TipoTransporte.get(TipoTransporte.nombre == elem[0])
                 try:
                     Eempresa.create(cuit=elem[25], razonSocial=elem[21])
+                    Ebarrios.create(nombre=elem[9],nro_comuna=elem[8])
+                    EstructuraBDObras.create(entorno=elem[2],nombre=elem[3],descripcion=elem[7],monto_contrato=elem[8],direccion=elem[11],fecha_inicio=elem[14],fecha_fin_inicial=elem[15],plazo_meses=elem[16],porcentaje_avance=0.0,licitacion_anio=elem[23],nro_contratacion=elem[25],beneficiarios=elem[27],mano_obra=elem[28],destacada=elem[30],expediente_numero=elem[34])
+
+                    #Eimagen.create(id_obra_id=elem[])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla Empresa.", e)
         print("Se han persistido los tipos de Empresas en la BD.")
     
-        
-    
+
     
                 

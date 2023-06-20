@@ -6,11 +6,6 @@ class BaseModel(Model):
 
     class Meta:
         database = sqlite_db
-class Ebarrios (BaseModel):
-            nombre = CharField()
-            nro_comuna = IntegerField()
-            class Meta:
-                db_table = 'barrios'
 
 class Eareas_responsables (BaseModel):
             descripcion = CharField()
@@ -21,6 +16,12 @@ class Ecomunas (BaseModel):
             nro_comuna = IntegerField()
             class Meta:
                 db_table = 'comunas'
+
+class Ebarrios (BaseModel):
+            nombre = CharField()
+            nro_comuna = ForeignKeyField(Ecomunas,backref='comunas')
+            class Meta:
+                db_table = 'barrios'
         
 class Eempresa (BaseModel):
             cuit = CharField()
@@ -57,23 +58,24 @@ class EstructuraBDObras (BaseModel):
             fecha_inicio = DateField()
             fecha_fin_inicial = DateField()
             plazo_meses = IntegerField()
-            porcentaje_avance = IntegerField()
-            licitacion_ano = IntegerField()
+            porcentaje_avance = DoubleField(default=0.0)
+            licitacion_anio = DateField()
             nro_contratacion = CharField()
             beneficiarios = CharField()
             mano_obra = CharField()
             destacada = CharField()
             expediente_numero = CharField()
-            id_etapa = ForeignKeyField(Eetapas, backref='etapas')
-            id_empresa = ForeignKeyField(Eempresa, backref='empresa')
-            id_tipo_obra = ForeignKeyField(Etipo_obra, backref='tipo_obra')
-            id_areas_responsables = ForeignKeyField(Eareas_responsables, backref='areas_responsables')
-            id_barrio = ForeignKeyField(Ebarrios, backref='barrios')
-            id_tipo_contratacion = ForeignKeyField(Etipo_contratacion, backref='tipo_contratacion')
-            id_financiamiento = ForeignKeyField(EFinanciamiento, backref='financiamiento')
-            
             class Meta:
                 db_table = 'Obras Públicas'
+'''           etapa = ForeignKeyField(Eetapas, backref='etapas')
+            empresa = ForeignKeyField(Eempresa, backref='empresa')
+            tipo_obra = ForeignKeyField(Etipo_obra, backref='tipo_obra')
+            areas_responsables = ForeignKeyField(Eareas_responsables, backref='areas_responsables')
+            barrio = ForeignKeyField(Ebarrios, backref='barrios')
+            tipo_contratacion = ForeignKeyField(Etipo_contratacion, backref='tipo_contratacion')
+            financiamiento = ForeignKeyField(EFinanciamiento, backref='financiamiento')'''
+            
+           
 
 class Eimagen (BaseModel):
             id_obra = ForeignKeyField(EstructuraBDObras, backref='obra')
@@ -89,7 +91,7 @@ class Obra ():
     def iniciar_contratacion():
         pass
 
-GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa)
+GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,Eimagen,EstructuraBDObras)
 
 
 
