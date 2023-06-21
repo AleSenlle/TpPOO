@@ -195,7 +195,6 @@ class GestionarObra(metaclass=ABCMeta):
         query = Eareas_responsables.select().where(Eareas_responsables.descripcion != ' ')
         resultados = list(query)
         
-        
         # Recorre los resultados y muestra la descripción
         for resultado in resultados:
             print(resultado.descripcion)
@@ -204,7 +203,6 @@ class GestionarObra(metaclass=ABCMeta):
         sqlite_db.close()
 
         area_responsable = input("Ingrese el responsable de área: ")
-
 
         descripcion = input("Ingrese una descripción: ")
         monto_contrato = input("Ingrese el monto del contrato: ")
@@ -239,11 +237,9 @@ class GestionarObra(metaclass=ABCMeta):
         empre=input("Ingrese la empresa: ")
         tipo_contrat=input("Ingrese el tipo de contratacion: ")
         
-
         obra = Obra(entorno=entorno, nombre=nombre, tipo_obra=tipo_obra, area_responsable=area_responsable,
                     descripcion=descripcion, monto_contrato=monto_contrato, barrio=barrio, direccion=direccion,
                     plazo_meses=plazo_meses, beneficiarios=beneficiarios,etapa=etap,empresa=empre,tipo_contratacion=tipo_contrat)
       
         obra.save()
-        
         return obra
