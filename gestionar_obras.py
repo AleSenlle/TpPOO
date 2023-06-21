@@ -139,8 +139,8 @@ class GestionarObra(metaclass=ABCMeta):
         for elem in df.values:
            if elem is not np.nan:
                 try:
-                    EstructuraBDObras.pre_save()
-                    EstructuraBDObras.create(entorno=elem[1],nombre=elem[2],descripcion=elem[6],monto_contrato=elem[7],direccion=elem[10],fecha_inicio=elem[13],fecha_fin_inicial=elem[14],plazo_meses=elem[15],porcentaje_avance=0.0,licitacion_anio=elem[22],nro_contratacion=elem[24],beneficiarios=elem[26],mano_obra=elem[27],expediente_numero=elem[33],etapa=elem[3],empresa=elem[21],tipo_obra=elem[4],area_responsable=elem[5],barrio=elem[9],tipo_contratacion=elem[23],financiamiento=elem[35])
+                    
+                    EstructuraBDObras.create(entorno=elem[1],nombre=elem[2],descripcion=elem[6],monto_contrato=elem[7],direccion=elem[10],fecha_inicio=elem[13],fecha_fin_inicial=elem[14],plazo_meses=elem[15],porcentaje_avance=0.0,licitacion_anio=elem[22],nro_contratacion=elem[24],beneficiarios=elem[26],mano_obra=elem[27],expediente_numero=elem[33],etapa=elem[3],empresa=elem[21],tipo_obra=elem[4],area_responsable=elem[5],barrio=elem[9],tipo_contratacion=elem[23])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla obras.", e)
         print("Se han persistido las obras en la BD.")
@@ -165,9 +165,9 @@ class GestionarObra(metaclass=ABCMeta):
                     print("Error al insertar un nuevo registro en la tabla barrio.", e)
         print("Se han persistido los barrios en la BD.")
     
-    #este es el punto 4.F
+ #este es el punto 4.F
     @classmethod
-    def nueva_obra(cls, Obra, Eetapas,Eareas_responsables,Ebarrios):
+    def nueva_obra(cls, Obra,Etipo_obra,Eareas_responsables,Ebarrios,Eetapas):
         sqlite_db = cls.conectar_db()
         print ("Conexión exitosa a la base de datos")
         
@@ -227,9 +227,23 @@ class GestionarObra(metaclass=ABCMeta):
         direccion = input("Ingrese la dirección: ")
         plazo_meses = input("Ingrese el plazo de meses: ")
         beneficiarios = input("Ingrese quienes son los beneficiarios: ")
+        query = Eetapas.select().where(Eetapas.descripcion != ' ')
+        resultados = list(query)
+        print("Cantidad de obras finalizadas: ", len(resultados))
+        
+        # Recorre los resultados y muestra la descripción
+        for resultado in resultados:
+            print(resultado.descripcion)
+        print("Fin de la lista")
+        etap=input("Ingrese la etapa: ")
+        empre=input("Ingrese la empresa: ")
+        tipo_contrat=input("Ingrese el tipo de contratacion: ")
+        
 
         obra = Obra(entorno=entorno, nombre=nombre, tipo_obra=tipo_obra, area_responsable=area_responsable,
                     descripcion=descripcion, monto_contrato=monto_contrato, barrio=barrio, direccion=direccion,
-                    plazo_meses=plazo_meses, beneficiarios=beneficiarios)
-
+                    plazo_meses=plazo_meses, beneficiarios=beneficiarios,etapa=etap,empresa=empre,tipo_contratacion=tipo_contrat)
+      
+        obra.save()
+        
         return obra
