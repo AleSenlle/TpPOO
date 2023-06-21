@@ -68,7 +68,7 @@ class GestionarObra(metaclass=ABCMeta):
         }
         return mapeo.get(etapa, 'Proyecto')
     @classmethod
-    def cargar_datos(self,Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,EstructuraBDObras):
+    def cargar_datos(self,Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,Obra):
         df=self.limpiar_datos()
        
         data_unique = list(df['comuna'].unique())
@@ -140,7 +140,7 @@ class GestionarObra(metaclass=ABCMeta):
            if elem is not np.nan:
                 try:
                     
-                    EstructuraBDObras.create(entorno=elem[1],nombre=elem[2],descripcion=elem[6],monto_contrato=elem[7],direccion=elem[10],fecha_inicio=elem[13],fecha_fin_inicial=elem[14],plazo_meses=elem[15],porcentaje_avance=0.0,licitacion_anio=elem[22],nro_contratacion=elem[24],beneficiarios=elem[26],mano_obra=elem[27],expediente_numero=elem[33],etapa=elem[3],empresa=elem[21],tipo_obra=elem[4],area_responsable=elem[5],barrio=elem[9],tipo_contratacion=elem[23])
+                    Obra.create(entorno=elem[1],nombre=elem[2],descripcion=elem[6],monto_contrato=elem[7],direccion=elem[10],fecha_inicio=elem[13],fecha_fin_inicial=elem[14],plazo_meses=elem[15],porcentaje_avance=0.0,licitacion_anio=elem[22],nro_contratacion=elem[24],beneficiarios=elem[26],mano_obra=elem[27],expediente_numero=elem[33],etapa=elem[3],empresa=elem[21],tipo_obra=elem[4],area_responsable=elem[5],barrio=elem[9],tipo_contratacion=elem[23])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla obras.", e)
         print("Se han persistido las obras en la BD.")
