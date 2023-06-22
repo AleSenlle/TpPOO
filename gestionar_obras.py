@@ -143,10 +143,10 @@ class GestionarObra(metaclass=ABCMeta):
         # Ahora normalizo las tablas que tienen +2 columnas:
         df.drop_duplicates(subset=['nombre'], inplace=True)
         for elem in df.values:
-            if elem is not np.nan:
+            if elem[2] is not np.nan:
                 try:
 
-                    Obra.create(entorno=elem[1], nombre=elem[2], descripcion=elem[6], monto_contrato=elem[7], direccion=elem[10], fecha_inicio=elem[13], fecha_fin_inicial=elem[14], plazo_meses=elem[15], porcentaje_avance=0.0, licitacion_anio=elem[22],
+                    Obra.create(financiamiento=elem[35],entorno=elem[1], nombre=elem[2], descripcion=elem[6], monto_contrato=elem[7], direccion=elem[10], fecha_inicio=elem[13], fecha_fin_inicial=elem[14], plazo_meses=elem[15], porcentaje_avance=0.0, licitacion_anio=elem[22],
                                 nro_contratacion=elem[24], beneficiarios=elem[26], mano_obra=elem[27], expediente_numero=elem[33], etapa=elem[3], empresa=elem[21], tipo_obra=elem[4], area_responsable=elem[5], barrio=elem[9], tipo_contratacion=elem[23])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla obras.", e)
@@ -322,7 +322,7 @@ class GestionarObra(metaclass=ABCMeta):
 
         obra = Obra(entorno=entorno, nombre=nombre, tipo_obra=tipo_obra, area_responsable=area_responsable,
                     descripcion=descripcion, monto_contrato=monto_contrato, barrio=barrio, direccion=direccion,
-                    plazo_meses=plazo_meses, beneficiarios=beneficiarios, etapa=etap, empresa=empre, tipo_contratacion=tipo_contrat)
+                    plazo_meses=plazo_meses, beneficiarios=beneficiarios, etapa=etap, empresa=empre, tipo_contratacion=tipo_contrat, financiamiento="sin asignar")
 
         obra.save()
         return obra

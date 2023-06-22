@@ -92,11 +92,11 @@ class Obra (BaseModel):
     barrio = ForeignKeyField(Ebarrios, backref='barrios')
     tipo_contratacion = ForeignKeyField(
         Etipo_contratacion, backref='tipo_contratacion')
-    #financiamiento = ForeignKeyField(EFinanciamiento, backref='financiamiento')
+    financiamiento = CharField()
     
 
     class Meta:
-        db_table = 'Obras Públicas'
+        db_table = 'Obras_publicas'
 
     def __str__(self) -> str:
         return "el entorno es: " + str(self.entorno) + "\nEl nombre de la obra es: " + str(self.nombre) + "\nEstá en la etapa de: " + str(self.etapa) + "\nEl tipo de obra es: " + str(self.tipo_obra) + "\nEl área responsable es: " + str(self.area_responsable) + "\nLa descripción es: " + str(self.descripcion) + "\nEl monto del contrato es: " + str(self.monto_contrato) + "\nUbicada en el barrio de: " + str(self.barrio) + "\nLa dirección es: " + str(self.direccion) + "\nFecha de inicio: " + str(self.fecha_inicio) + "\nLa fecha prevista para la finalizacion es: " + str(self.fecha_fin_inicial) + "\nEl plazo de meses estimado es de: " + str(self.plazo_meses) + " meses" + "\nEl porcentaje de avance es de: " + str(self.porcentaje_avance) + "%" + "\nLa empresa a cargo es: " + str(self.empresa) + "\nLa licitación es del año: " + str(self.licitacion_anio) + "\nEl tipo de contratación es: " + str(self.tipo_contratacion) + "\nEl número de contratación es: " + str(self.nro_contratacion) + "\nLos beneficiarios son: " + str(self.beneficiarios) + "\nLa mano de obra está compuesta por: " + str(self.mano_obra) + " empleados" + "\nEl expediente es el número: " + str(self.expediente_numero) + " \n " + str(self.fuente_financiamiento)
@@ -141,8 +141,8 @@ class Obra (BaseModel):
 
 lista = [Ebarrios, Eareas_responsables, Ecomunas, Eempresa,
          Eetapas, Obra, Etipo_obra, Etipo_contratacion, EFinanciamiento]
-# GestionarObra().mapear_orm(sqlite_db,lista)
-# GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,Obra)
+#GestionarObra().mapear_orm(sqlite_db,lista)
+#GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,Obra)
 
-#obra = GestionarObra().nueva_obra(Obra, Etipo_obra, Eareas_responsables, Ebarrios, Eetapas)
-GestionarObra().obtener_indicadores(Obra,Etipo_obra,Eareas_responsables, Ebarrios, Eetapas)
+obra = GestionarObra().nueva_obra(Obra, Etipo_obra, Eareas_responsables, Ebarrios, Eetapas)
+#GestionarObra().obtener_indicadores(Obra,Etipo_obra,Eareas_responsables, Ebarrios, Eetapas)
