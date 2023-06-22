@@ -1,6 +1,6 @@
 from peewee import *
 from gestionar_obras import *
-import math
+
 
 sqlite_db = GestionarObra().conectar_db()
 
