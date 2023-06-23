@@ -175,149 +175,28 @@ class GestionarObra(metaclass=ABCMeta):
  # este es el punto 4.F
     @classmethod
     def nueva_obra(self, Obra, Etipo_obra, Eareas_responsables, Ebarrios, Eetapas):
-        sqlite_db = self.conectar_db()
-
-        print("Conexión exitosa a la base de datos")
-        print("-----------------------------------------------")
-        # Consulta a la base de datos
-        query = Etipo_obra.select().where(Etipo_obra.descripcion != ' ')
-        resultados = list(query)
-
-        # Recorre los resultados y muestra la descripción
-        print("los tipos de obras son:")
-        print("-----------------------------------------------")
-        i = 1
-        lista = []
-        for resultado in resultados:
-            print(str(i)+" "+resultado.descripcion)
-            i = i+1
-            lista.append(resultado.descripcion)
-
-        sqlite_db.close()
-        print("-----------------------------------------------")
-
-        opcion_elegida = int(input("Elija el número de opción: "))
-        while True:
-            if opcion_elegida > 0 and opcion_elegida < 25:
-                try:
-                    tipo_obra = lista[opcion_elegida-1]
-
-                except:
-                    print("ingrese una opcion correcta")
-
-                break
-            else:
-                print("Ingrese un número entre 1 y 24")
-                opcion_elegida = int(input("Elija el número de opción: "))
+        tipo_obra = "sin definir"
 
         entorno = input("Ingrese el entorno: ")
         nombre = input("Ingrese el nombre: ")
 
-        sqlite_db = self.conectar_db()
-        print("Conexión exitosa a la base de datos")
-
-        print("-----------------------------------------------")
-        # Consulta a la base de datos
-        query = Eareas_responsables.select().where(
-            Eareas_responsables.descripcion != ' ')
-        resultados = list(query)
-        
-
-        # Recorre los resultados y muestra la descripción
-        print("las areas responsables son:")
-        print("-----------------------------------------------")
-        i = 1
-        lista = []
-        for resultado in resultados:
-            print(str(i)+" "+resultado.descripcion)
-            i = i+1
-            lista.append(resultado.descripcion)
-
-        sqlite_db.close()
-        print("-----------------------------------------------")
-
-        opcion_elegida = int(input("Elija el número de opción: "))
-        while True:
-            if opcion_elegida > 0 and opcion_elegida < 21:
-                try:
-                    area_responsable = lista[opcion_elegida-1]
-
-                except:
-                    print("ingrese una opcion correcta")
-
-                break
-            else:
-                print("Ingrese un número entre 1 y 20")
-                opcion_elegida = int(input("Elija el número de opción: "))
+        area_responsable = "sin definir"
 
         descripcion = input("Ingrese una descripción: ")
         monto_contrato = input("Ingrese el monto del contrato: ")
 
-        sqlite_db = self.conectar_db()
-        print("Conexión exitosa a la base de datos")
+        
 
-        # Consulta a la base de datos
-        query = Ebarrios.select().where(Ebarrios.nombre != ' ')
-        resultados = list(query)
-        print("los barrios son:")
-        print("-----------------------------------------------")
-        i = 1
-        lista = []
-        for resultado in resultados:
-            print(str(i)+" "+resultado.nombre)
-            i = i+1
-            lista.append(resultado.nombre)
-
-        sqlite_db.close()
-        print("-----------------------------------------------")
-
-        opcion_elegida = int(input("Elija el número de opción: "))
-        while True:
-            if opcion_elegida > 0 and opcion_elegida < 57:
-                try:
-                    barrio = lista[opcion_elegida-1]
-
-                except:
-                    print("ingrese una opcion correcta")
-
-                break
-            else:
-                print("Ingrese un número entre 1 y 56")
-                opcion_elegida = int(input("Elija el número de opción: "))
+        barrio = "sin definir"
 
         direccion = input("Ingrese la dirección: ")
         plazo_meses = input("Ingrese el plazo de meses: ")
         beneficiarios = input("Ingrese quienes son los beneficiarios: ")
+       
 
-        query = Eetapas.select().where(Eetapas.descripcion != ' ')
-        resultados = list(query)
-        print("las etapas son:")
-        print("-----------------------------------------------")
-        i = 1
-        lista = []
-        for resultado in resultados:
-            print(str(i)+" "+resultado.descripcion)
-            i = i+1
-            lista.append(resultado.descripcion)
+        etap = "sin asignar"
 
-        sqlite_db.close()
-        print("-----------------------------------------------")
-
-        opcion_elegida = int(input("Elija el número de opción: "))
-        while True:
-            if opcion_elegida > 0 and opcion_elegida < 5:
-                try:
-                    etap = lista[opcion_elegida-1]
-
-                except:
-                    print("ingrese una opcion correcta")
-
-                break
-            else:
-                print("Ingrese un número entre 1 y 4")
-                opcion_elegida = int(input("Elija el número de opción: "))
-
-        empre = input("Ingrese la empresa: ")
+        empre = "sin asignar"
         tipo_contrat = "sin asignar"
 
         obra = Obra(entorno=entorno, nombre=nombre, tipo_obra=tipo_obra, area_responsable=area_responsable,

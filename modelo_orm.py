@@ -102,47 +102,259 @@ class Obra (BaseModel):
         return "el entorno es: " + str(self.entorno) + "\nEl nombre de la obra es: " + str(self.nombre) + "\nEstá en la etapa de: " + str(self.etapa) + "\nEl tipo de obra es: " + str(self.tipo_obra) + "\nEl área responsable es: " + str(self.area_responsable) + "\nLa descripción es: " + str(self.descripcion) + "\nEl monto del contrato es: " + str(self.monto_contrato) + "\nUbicada en el barrio de: " + str(self.barrio) + "\nLa dirección es: " + str(self.direccion) + "\nFecha de inicio: " + str(self.fecha_inicio) + "\nLa fecha prevista para la finalizacion es: " + str(self.fecha_fin_inicial) + "\nEl plazo de meses estimado es de: " + str(self.plazo_meses) + " meses" + "\nEl porcentaje de avance es de: " + str(self.porcentaje_avance) + "%" + "\nLa empresa a cargo es: " + str(self.empresa) + "\nLa licitación es del año: " + str(self.licitacion_anio) + "\nEl tipo de contratación es: " + str(self.tipo_contratacion) + "\nEl número de contratación es: " + str(self.nro_contratacion) + "\nLos beneficiarios son: " + str(self.beneficiarios) + "\nLa mano de obra está compuesta por: " + str(self.mano_obra) + " empleados" + "\nEl expediente es el número: " + str(self.expediente_numero) + " \n " + str(self.fuente_financiamiento)
 
     def nuevo_proyecto(self):
-        self.nombre = input("Ingrese el nombre del proyecto: ")
-        self.etapa = "Proyecto"
+        self.etapa = 'Proyecto'
+        sqlite_db = GestionarObra().conectar_db()
 
-    def iniciar_contratacion(self, tipo_contratacion: str, nro_contratacion):
+        print("Conexión exitosa a la base de datos")
+        print("-----------------------------------------------")
+        # Consulta a la base de datos
+        query = Etipo_obra.select().where(Etipo_obra.descripcion != ' ')
+        resultados = list(query)
 
-        self.tipo_contratacion = tipo_contratacion
-        self.nro_contratacion = nro_contratacion
+        # Recorre los resultados y muestra la descripción
+        print("los tipos de obras son:")
+        print("-----------------------------------------------")
+        i = 1
+        lista = []
+        for resultado in resultados:
+            print(str(i)+" "+resultado.descripcion)
+            i = i+1
+            lista.append(resultado.descripcion)
 
-    def adjudicar_obra(self, empresa: str, expediente_numero: str):
+        sqlite_db.close()
+        print("-----------------------------------------------")
 
-        self.empresa = empresa
-        self.expediente_numero = expediente_numero
+        opcion_elegida = int(input("Elija el número de opción: "))
+        while True:
+            if opcion_elegida > 0 and opcion_elegida < 25:
+                try:
+                    self.tipo_obra = lista[opcion_elegida-1]
 
-    def iniciar_obra(self, fecha_inicio: str, fecha_fin_inicial, fuente_financiamiento: str, mano_obra: int):
+                except:
+                    print("ingrese una opcion correcta")
 
-        self.fecha_inicio = fecha_inicio
-        self.fecha_fin_inicial = fecha_fin_inicial
-        self.fuente_financiamiento = fuente_financiamiento
-        self.mano_obra = mano_obra
+                break
+            else:
+                print("Ingrese un número entre 1 y 24")
+                opcion_elegida = int(input("Elija el número de opción: "))
+        print("-----------------------------------------------")
+        sqlite_db = GestionarObra().conectar_db()
 
-    def actualizar_porcentaje_avance(self, porc_incremento: int):
-        self.porcentaje_avance = self.porcentaje_avance + porc_incremento
+        print("Conexión exitosa a la base de datos")
 
-    def incrementar_plazo(self, meses: int):
-        self.plazo_meses = self.plazo_meses + meses
+        print("-----------------------------------------------")
+        # Consulta a la base de datos
+        query = Eareas_responsables.select().where(
+            Eareas_responsables.descripcion != ' ')
+        resultados = list(query)
 
-    def incrementar_mano_obra(self, cantidad: int):
-        self.mano_obra = self.mano_obra + cantidad
+        # Recorre los resultados y muestra la descripción
+        print("las areas responsables son:")
+        print("-----------------------------------------------")
+        i = 1
+        lista = []
+        for resultado in resultados:
+            print(str(i)+" "+resultado.descripcion)
+            i = i+1
+            lista.append(resultado.descripcion)
+
+        sqlite_db.close()
+        print("-----------------------------------------------")
+
+        opcion_elegida = int(input("Elija el número de opción: "))
+        while True:
+            if opcion_elegida > 0 and opcion_elegida < 21:
+                try:
+                    area_responsable = lista[opcion_elegida-1]
+
+                except:
+                    print("ingrese una opcion correcta")
+
+                break
+            else:
+                print("Ingrese un número entre 1 y 20")
+                opcion_elegida = int(input("Elija el número de opción: "))
+                # Consulta a la base de datos
+        
+        sqlite_db = GestionarObra().conectar_db()
+
+        print("Conexión exitosa a la base de datos")
+        query = Ebarrios.select().where(Ebarrios.nombre != ' ')
+        resultados = list(query)
+        print("los barrios son:")
+        print("-----------------------------------------------")
+        i = 1
+        lista = []
+        for resultado in resultados:
+            print(str(i)+" "+resultado.nombre)
+            i = i+1
+            lista.append(resultado.nombre)
+
+        sqlite_db.close()
+        print("-----------------------------------------------")
+
+        opcion_elegida = int(input("Elija el número de opción: "))
+        while True:
+            if opcion_elegida > 0 and opcion_elegida < 57:
+                try:
+                    self.barrio = lista[opcion_elegida-1]
+
+                except:
+                    print("ingrese una opcion correcta")
+
+                break
+            else:
+                print("Ingrese un número entre 1 y 56")
+                opcion_elegida = int(input("Elija el número de opción: "))
+
+
+    def iniciar_contratacion(self):
+        
+        sqlite_db = GestionarObra().conectar_db()
+
+        print("Conexión exitosa a la base de datos")
+        print("-----------------------------------------------")
+        # Consulta a la base de datos
+        query = Etipo_contratacion.select().where(Etipo_contratacion.descripcion != ' ')
+        resultados = list(query)
+
+        # Recorre los resultados y muestra la descripción
+        print("los tipos de contratacion son:")
+        print("-----------------------------------------------")
+        i = 1
+        lista = []
+        for resultado in resultados:
+            print(str(i)+" "+resultado.descripcion)
+            i = i+1
+            lista.append(resultado.descripcion)
+
+        sqlite_db.close()
+        print("-----------------------------------------------")
+
+        opcion_elegida = int(input("Elija el número de opción: "))
+        while True:
+            if opcion_elegida > 0 and opcion_elegida < 43:
+                try:
+                    self.tipo_contratacion = lista[opcion_elegida-1]
+
+                except:
+                    print("ingrese una opcion correcta")
+
+                break
+            else:
+                print("Ingrese un número entre 1 y 43")
+                opcion_elegida = int(input("Elija el número de opción: "))
+        print("-----------------------------------------------")
+        self.nro_contratacion = int(input("Ingrese el número de contratación: "))
+
+        
+
+    def adjudicar_obra(self):
+        sqlite_db = GestionarObra().conectar_db()
+
+        print("Conexión exitosa a la base de datos")
+        print("-----------------------------------------------")
+        # Consulta a la base de datos
+        query = Eempresa.select().where(
+            Eempresa.razonSocial != ' ')
+        resultados = list(query)
+
+        # Recorre los resultados y muestra la descripción
+        print("los tipos de obras son:")
+        print("-----------------------------------------------")
+        i = 1
+        lista = []
+        for resultado in resultados:
+            print(str(i)+" "+resultado.razonSocial)
+            i = i+1
+            lista.append(resultado.razonSocial)
+
+        sqlite_db.close()
+        print("-----------------------------------------------")
+
+        opcion_elegida = int(input("Elija el número de opción: "))
+        while True:
+            if opcion_elegida > 0 and opcion_elegida < 387:
+                try:
+                    self.empresa = lista[opcion_elegida-1]
+
+                except:
+                    print("ingrese una opcion correcta")
+
+                break
+            else:
+                print("Ingrese un número entre 1 y 386")
+                opcion_elegida = int(input("Elija el número de opción: "))
+        print("-----------------------------------------------")
+        self.expediente_numero = int(input("Ingrese el número de expediente: "))
+
+        
+
+    def iniciar_obra(self):
+
+        self.fecha_inicio = input("Ingrese la fecha de inicio: ")
+        self.fecha_fin_inicial = input("Ingrese la fecha estimada de fin: ")
+        
+        sqlite_db = GestionarObra().conectar_db()
+
+        print("Conexión exitosa a la base de datos")
+        print("-----------------------------------------------")
+        # Consulta a la base de datos
+        query = EFinanciamiento.select().where(
+            EFinanciamiento.razonSocial != ' ')
+        resultados = list(query)
+
+        # Recorre los resultados y muestra la descripción
+        print("las fuentes de financiamiento:")
+        print("-----------------------------------------------")
+        i = 1
+        lista = []
+        for resultado in resultados:
+            print(str(i)+" "+resultado.descripcion)
+            i = i+1
+            lista.append(resultado.descripcion)
+
+        sqlite_db.close()
+        print("-----------------------------------------------")
+
+        opcion_elegida = int(input("Elija el número de opción: "))
+        while True:
+            if opcion_elegida > 0 and opcion_elegida < 10:
+                try:
+                    self.financiamiento= lista[opcion_elegida-1]
+
+                except:
+                    print("ingrese una opcion correcta")
+
+                break
+            else:
+                print("Ingrese un número entre 1 y 9")
+                opcion_elegida = int(input("Elija el número de opción: "))
+        print("-----------------------------------------------")
+        self.mano_obra = int(input("Ingrese la cantidad de mano de obra: "))
+    
+    def actualizar_porcentaje_avance(self):
+        self.porcentaje_avance =self.porcentaje_avance+ int(input("Ingrese el porcentaje de avance: "))
+
+    def incrementar_plazo(self):
+        self.plazo_meses =self.plazo_meses+ int(input("Ingrese la cantidad de meses a incrementar: "))
+
+    def incrementar_mano_obra(self):
+        self.mano_obra = self.mano_obra + int(input("Ingrese la cantidad de mano de obra a incrementar: "))
 
     def finalizar_obra(self, obj_etapa_fin):
         self.porcentaje_avance = 100
-        self.etapa = obj_etapa_fin
+        self.etapa = "Finalizada"
 
     def rescindir_obra(self):
         self.etapa = 'Rescindida'
 
 
-lista = [Ebarrios, Eareas_responsables, Ecomunas, Eempresa,
-         Eetapas, Obra, Etipo_obra, Etipo_contratacion, EFinanciamiento]
+#lista = [Ebarrios, Eareas_responsables, Ecomunas, Eempresa,
+#         Eetapas, Obra, Etipo_obra, Etipo_contratacion, EFinanciamiento]
 #GestionarObra().mapear_orm(sqlite_db,lista)
 #GestionarObra().cargar_datos(Ecomunas,Eareas_responsables,Eetapas,EFinanciamiento,Etipo_contratacion,Etipo_obra,Eempresa,Ebarrios,Obra)
 
-obra = GestionarObra().nueva_obra(Obra, Etipo_obra, Eareas_responsables, Ebarrios, Eetapas)
+#obra = GestionarObra().nueva_obra(Obra, Etipo_obra, Eareas_responsables, Ebarrios, Eetapas)
 #GestionarObra().obtener_indicadores(Obra,Etipo_obra,Eareas_responsables, Ebarrios, Eetapas)
+
