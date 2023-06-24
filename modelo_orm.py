@@ -165,7 +165,7 @@ class Obra (BaseModel):
         while True:
             if opcion_elegida > 0 and opcion_elegida < 21:
                 try:
-                    area_responsable = lista[opcion_elegida-1]
+                    self.area_responsable = lista[opcion_elegida-1]
 
                 except:
                     print("ingrese una opcion correcta")
@@ -342,7 +342,7 @@ class Obra (BaseModel):
     def incrementar_mano_obra(self):
         self.mano_obra = self.mano_obra + int(input("Ingrese la cantidad de mano de obra a incrementar: "))
 
-    def finalizar_obra(self, obj_etapa_fin):
+    def finalizar_obra(self):
         self.porcentaje_avance = 100
         self.etapa = "Finalizada"
 

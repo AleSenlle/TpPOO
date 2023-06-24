@@ -65,6 +65,7 @@ if seleccion == "crear 2 obras":
         obra2.iniciar_contratacion()
         obra1.save()
         obra2.save()
+        
 
     
     
