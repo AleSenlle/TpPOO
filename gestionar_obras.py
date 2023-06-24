@@ -82,7 +82,7 @@ class GestionarObra(metaclass=ABCMeta):
                 Ecomunas.create(nro_comuna=elem)
             except IntegrityError as e:
                 print("Error al insertar un nuevo registro en la tabla Comuna.", e)
-        print("Se han persistido los tipos de Obras en la BD.")
+        print("Se han persistido los datos en la BD.")
 
         data_unique = list(df['area_responsable'].unique())
         print(data_unique)
@@ -93,7 +93,7 @@ class GestionarObra(metaclass=ABCMeta):
             except IntegrityError as e:
                 print(
                     "Error al insertar un nuevo registro en la tabla Area Responsable.", e)
-        print("Se han persistido los tipos de Obras en la BD.")
+        print("Se han persistido los datos en la BD.")
 
         df['etapa'] = df['etapa'].apply(self.normalizar_etapas)
         data_unique = list(df['etapa'].unique())
@@ -104,7 +104,7 @@ class GestionarObra(metaclass=ABCMeta):
                 Eetapas.create(descripcion=elem)
             except IntegrityError as e:
                 print("Error al insertar un nuevo registro en la tabla Etapa.", e)
-        print("Se han persistido los tipos de Obras en la BD.")
+        print("Se han persistido los datos en la BD.")
 
         data_unique = list(df['financiamiento'].unique())
         print(data_unique)
@@ -116,7 +116,7 @@ class GestionarObra(metaclass=ABCMeta):
                 except IntegrityError as e:
                     print(
                         "Error al insertar un nuevo registro en la tabla Financiamiento.", e)
-        print("Se han persistido los tipos de Obras en la BD.")
+        print("Se han persistido los datos en la BD.")
 
         data_unique = list(df['contratacion_tipo'].unique())
         print(data_unique)
@@ -128,7 +128,7 @@ class GestionarObra(metaclass=ABCMeta):
                 except IntegrityError as e:
                     print(
                         "Error al insertar un nuevo registro en la tabla Tipo de Contratacion.", e)
-        print("Se han persistido los tipos de Obras en la BD.")
+        print("Se han persistido los datos en la BD.")
 
         data_unique = list(df['tipo'].unique())
         print(data_unique)
@@ -138,19 +138,18 @@ class GestionarObra(metaclass=ABCMeta):
                 Etipo_obra.create(descripcion=elem)
             except IntegrityError as e:
                 print("Error al insertar un nuevo registro en la tabla Tipo de Obra.", e)
-        print("Se han persistido los tipos de Obras en la BD.")
+        print("Se han persistido los datos en la BD.")
 
-        # Ahora normalizo las tablas que tienen +2 columnas:
+        # Ahora normalizamos las tablas que tienen +2 columnas:
         df.drop_duplicates(subset=['nombre'], inplace=True)
         for elem in df.values:
             if elem[2] is not np.nan:
                 try:
-
                     Obra.create(financiamiento=elem[35],entorno=elem[1], nombre=elem[2], descripcion=elem[6], monto_contrato=elem[7], direccion=elem[10], fecha_inicio=elem[13], fecha_fin_inicial=elem[14], plazo_meses=elem[15], porcentaje_avance=0.0, licitacion_anio=elem[22],
                                 nro_contratacion=elem[24], beneficiarios=elem[26], mano_obra=elem[27], expediente_numero=elem[33], etapa=elem[3], empresa=elem[21], tipo_obra=elem[4], area_responsable=elem[5], barrio=elem[9], tipo_contratacion=elem[23])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla obras.", e)
-        print("Se han persistido las obras en la BD.")
+        print("Se han persistido los datos en la BD.")
 
         df.drop_duplicates(subset=['licitacion_oferta_empresa'], inplace=True)
         for elem in df.values:
@@ -160,7 +159,7 @@ class GestionarObra(metaclass=ABCMeta):
                     Eempresa.create(cuit=elem[25], razonSocial=elem[21])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla Empresa.", e)
-        print("Se han persistido los tipos de Empresas en la BD.")
+        print("Se han persistido los datos en la BD.")
 
         df.drop_duplicates(subset=['barrio'], inplace=True)
         for elem in df.values:
@@ -170,32 +169,22 @@ class GestionarObra(metaclass=ABCMeta):
                     Ebarrios.create(nombre=elem[9], nro_comuna=elem[8])
                 except IntegrityError as e:
                     print("Error al insertar un nuevo registro en la tabla barrio.", e)
-        print("Se han persistido los barrios en la BD.")
+        print("Se han persistido los datos en la BD.")
 
- # este es el punto 4.F
+ # Este es el punto 4.F
     @classmethod
     def nueva_obra(self, Obra, Etipo_obra, Eareas_responsables, Ebarrios, Eetapas):
-        tipo_obra = "sin definir"
-
+        tipo_obra = "Sin definir"
         entorno = input("Ingrese el entorno: ")
         nombre = input("Ingrese el nombre: ")
-
-        area_responsable = "sin definir"
-
+        area_responsable = "Sin definir"
         descripcion = input("Ingrese una descripción: ")
         monto_contrato = input("Ingrese el monto del contrato: ")
-
-        
-
-        barrio = "sin definir"
-
+        barrio = "Sin definir"
         direccion = input("Ingrese la dirección: ")
         plazo_meses = input("Ingrese el plazo de meses: ")
         beneficiarios = input("Ingrese quienes son los beneficiarios: ")
-       
-
         etap = "sin asignar"
-
         empre = "sin asignar"
         tipo_contrat = "sin asignar"
 
@@ -206,21 +195,19 @@ class GestionarObra(metaclass=ABCMeta):
         obra.save()
         return obra
 
-    # este es el punto 4.G
+    # Este es el punto 4.G
     @classmethod
     def obtener_indicadores(self, Obra,Etipo_obra, Eareas_responsables, Ebarrios, Eetapas):
         # a. Listado de todas las áreas responsables.
         sqlite_db = self.conectar_db()
         print("Conexión exitosa a la base de datos")
-
-        print("-----------------------------------------------")
+        print("-----------------------------------------------") 
         # Consulta a la base de datos
         query = Eareas_responsables.select().where(
             Eareas_responsables.descripcion != ' ')
         resultados = list(query)
-
-        # Recorre los resultados y muestra la descripción
-        print("las areas responsables son:")
+        # Recorre los resultados y muestra las opciones
+        print("Las areas responsables son:")
         print("-----------------------------------------------")
         i = 1
         lista = []
@@ -228,20 +215,18 @@ class GestionarObra(metaclass=ABCMeta):
             print(str(i)+" "+resultado.descripcion)
             i = i+1
             lista.append(resultado.descripcion)
-
         sqlite_db.close()
         print("-----------------------------------------------")
+        
         # b. Listado de todos los tipos de obra.
         sqlite_db = self.conectar_db()
         print("Conexión exitosa a la base de datos")
-
         print("-----------------------------------------------")
         # Consulta a la base de datos
         query = Etipo_obra.select().where(Etipo_obra.descripcion != ' ')
         resultados = list(query)
-
         # Recorre los resultados y muestra la descripción
-        print("los tipo de obra son :")
+        print("Los tipo de obra son :")
         print("-----------------------------------------------")
         i = 1
         lista = []
@@ -249,14 +234,12 @@ class GestionarObra(metaclass=ABCMeta):
             print(str(i)+" "+resultado.descripcion)
             i = i+1
             lista.append(resultado.descripcion)
-
         sqlite_db.close()
         print("-----------------------------------------------")
         
         # c. Cantidad de obras que se encuentran en cada etapa.
         sqlite_db = self.conectar_db()
         print("Conexión exitosa a la base de datos")
-
         print("-----------------------------------------------")
         # Consulta a la base de datos
         query = Obra.select(fn.COUNT()).where(Obra.etapa_id == 'Finalizada')
@@ -267,10 +250,10 @@ class GestionarObra(metaclass=ABCMeta):
         count2 = query2.scalar()
         count3 = query3.scalar()
         count4 = query4.scalar()
-        print("la cantidad de obras finalizadas son: "+str(count))
-        print("la cantidad de obras inicializadas son: "+str(count2))
-        print("la cantidad de obras rescindidas son: "+str(count3))
-        print("la cantidad de obras en proyecto son: "+str(count4))
+        print("La cantidad de obras finalizadas son: "+str(count))
+        print("La cantidad de obras inicializadas son: "+str(count2))
+        print("La cantidad de obras rescindidas son: "+str(count3))
+        print("La cantidad de obras en proyecto son: "+str(count4))
         print("-----------------------------------------------")
         
         # d.  Cantidad de obras por tipo de obra.
@@ -279,7 +262,7 @@ class GestionarObra(metaclass=ABCMeta):
         for resultado in resultados:
             query = Obra.select(fn.COUNT()).where(Obra.tipo_obra_id == resultado.descripcion)
             count = query.scalar()
-            print("la cantidad de obras de tipo "+str(resultado.descripcion)+" son: "+str(count))
+            print("La cantidad de obras de tipo "+str(resultado.descripcion)+" son: "+str(count))
         print("-----------------------------------------------")
         
         #e. Listado de todos los barrios pertenecientes a las comunas 1, 2 y 3.
@@ -287,7 +270,7 @@ class GestionarObra(metaclass=ABCMeta):
                                         '1' or Ebarrios.nro_comuna_id == '2' or Ebarrios.nro_comuna_id == '3')
         resultados = list(query)
         for resultado in resultados:
-            print("los barrios de las comunas 1, 2 y 3 son: "+str(resultado.nombre))
+            print("Los barrios de las comunas 1, 2 y 3 son: "+str(resultado.nombre))
         print("-----------------------------------------------")
         
         # f. Cantidad de obras “Finalizadas” en la comuna 1.
@@ -296,15 +279,11 @@ class GestionarObra(metaclass=ABCMeta):
             query = Obra.select(fn.COUNT()).where(Obra.etapa_id == 'Finalizada' and Obra.barrio_id == resultado.nombre)
             count = query.scalar()
             suma=suma+count
-        print("la cantidad de obras finalizadas en la comuna 1 son: "+str(suma))
+        print("La cantidad de obras finalizadas en la comuna 1 son: "+str(suma))
         print("-----------------------------------------------")
         
         # g. Cantidad de obras “Finalizadas” en un plazo menor o igual a 24 meses
         query = Obra.select(fn.COUNT()).where(Obra.etapa_id == 'Finalizada' and Obra.plazo_meses <= 24)
         count = query.scalar()
-        print("la cantidad de obras finalizadas en un plazo menor o igual a 24 meses son: "+str(count))
+        print("La cantidad de obras finalizadas en un plazo menor o igual a 24 meses son: "+str(count))
         print("-----------------------------------------------")
-
-            
-            
-        
