@@ -301,7 +301,7 @@ class Obra (BaseModel):
         print("-----------------------------------------------")
         # Consulta a la base de datos
         query = EFinanciamiento.select().where(
-            EFinanciamiento.razonSocial != ' ')
+            EFinanciamiento.descripcion != ' ')
         resultados = list(query)
 
         # Recorre los resultados y muestra la descripción
@@ -337,7 +337,8 @@ class Obra (BaseModel):
         self.porcentaje_avance =self.porcentaje_avance+ int(input("Ingrese el porcentaje de avance: "))
 
     def incrementar_plazo(self):
-        self.plazo_meses =self.plazo_meses+ int(input("Ingrese la cantidad de meses a incrementar: "))
+        incremento=int(input("Ingrese la cantidad de meses a incrementar: "))
+        self.plazo_meses = int(self.plazo_meses) + incremento
 
     def incrementar_mano_obra(self):
         self.mano_obra = self.mano_obra + int(input("Ingrese la cantidad de mano de obra a incrementar: "))

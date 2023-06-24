@@ -44,7 +44,7 @@ if seleccion == "crear 2 obras":
     print("ingrese los datos de obra 2")
     obra2 = GestionarObra().nueva_obra(Obra, Etipo_obra, Eareas_responsables, Ebarrios, Eetapas)
     print("obras creadas con exito")
-    print("¿quiere iniciar un nuevo proyecto?")
+    print("¿pasar por los diferentes estados de la obra?")
     lista=["si","no"]
     i=1
     for opcion in lista:
@@ -63,6 +63,28 @@ if seleccion == "crear 2 obras":
         obra2.save()
         obra1.iniciar_contratacion()
         obra2.iniciar_contratacion()
+        obra1.save()
+        obra2.save()
+        obra1.adjudicar_obra
+        obra2.adjudicar_obra
+        obra1.save()
+        obra2.save()
+        obra1.iniciar_obra()
+        obra2.iniciar_obra()
+        obra1.save()
+        obra2.save()
+        obra1.actualizar_porcentaje_avance()
+        obra2.actualizar_porcentaje_avance()
+        obra1.save()
+        obra2.save()
+        obra1.incrementar_plazo()
+        obra2.incrementar_plazo()
+        obra1.save()
+        obra2.save()
+        obra1.incrementar_mano_obra()
+        obra1.save()
+        obra2.rescindir_obra()
+        obra1.finalizar_obra()
         obra1.save()
         obra2.save()
         
